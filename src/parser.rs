@@ -72,13 +72,26 @@ impl Parser {
         let tok = self.intip().clone();
 
         match &tok.tipe {
+            // ✅ PASTIKAN BLOK INI BERADA TEPAT DI BAWAH 'match &tok.tipe {'
+            TipeToken::Pakai => {
+                self.ambil(); // Lewati kata 'PAKAI'
+                let path_tok = self.ambil();
+                
+                let path = match path_tok.tipe {
+                    TipeToken::Teks(ref p) => p.clone(),
+                    _ => return Err(format!("Baris {}: Diharapkan teks path/lokasi file setelah perintah PAKAI", tok.baris)),
+                };
+                
+                Ok(NodeAST::PakaiFile { path })
+            },
+            
             TipeToken::Buat => {
                 self.ambil();
                 let nama_tok = self.ambil();
                 let nama = match nama_tok.tipe {
                     TipeToken::Identitas(ref n) => n.clone(),
                     _ => return Err(format!("Baris {}: Diharapkan nama variabel setelah BUAT", tok.baris)),
-                };
+                };              
                 self.pastikan(&TipeToken::SamaDengan, "Diharapkan '=' setelah nama variabel")?;
                 let expr = self.parse_ekspresi()?;
                 Ok(NodeAST::DeklarasiVar { nama, ekspresi: expr })

@@ -59,5 +59,8 @@ pub enum NodeAST {
     Kembalikan {
         ekspresi: Ekspresi,
     },
+    PakaiFile {
+        path: String,
+    },
     EkspresiStmt(Ekspresi),
 }

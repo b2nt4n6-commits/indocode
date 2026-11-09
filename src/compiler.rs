@@ -75,7 +75,7 @@ if (!function_exists('indo_set_database')) {
         )";
         try { $INDO_DB->exec($sql_create); } catch (PDOException $e) {}
 
-        // 2. Ambil daftar kolom yang sudah ada di phpMyAdmin
+        // 2. Ambil daftar kolom yang sudah ada di database
         $existing_columns = [];
         try {
             $stmt = $INDO_DB->query("SHOW COLUMNS FROM `$tabel`");
@@ -84,8 +84,29 @@ if (!function_exists('indo_set_database')) {
             }
         } catch (PDOException $e) {}
 
-        // 3. SINKRONISASI CERDAS (Auto Diffing & ALTER TABLE)
-        $kolom_array = explode(',', $struktur_kolom);
+        // 3. PARSER CERDAS: Memecah definisi kolom tanpa memutus koma di dalam ENUM(...)
+        $kolom_array = [];
+        $buffer = '';
+        $depth = 0;
+        $len = strlen($struktur_kolom);
+        for ($i = 0; $i < $len; $i++) {
+            $char = $struktur_kolom[$i];
+            if ($char === '(') {
+                $depth++;
+            } else if ($char === ')') {
+                $depth--;
+            } else if ($char === ',' && $depth === 0) {
+                $kolom_array[] = trim($buffer);
+                $buffer = '';
+                continue;
+            }
+            $buffer .= $char;
+        }
+        if (trim($buffer) !== '') {
+            $kolom_array[] = trim($buffer);
+        }
+
+        // 4. SINKRONISASI CERDAS (Auto Diffing & ALTER TABLE)
         foreach ($kolom_array as $def) {
             $def = trim($def);
             if (empty($def)) continue;
@@ -94,7 +115,7 @@ if (!function_exists('indo_set_database')) {
             $parts = preg_split('/\s+/', $def);
             $nama_kolom = strtolower(str_replace('`', '', trim($parts[0])));
             
-            // Tambahkan kolom jika belum ada (hindari duplikasi id & tanggal_input)
+            // Tambahkan kolom jika belum ada
             if (!in_array($nama_kolom, $existing_columns) && $nama_kolom !== 'id' && $nama_kolom !== 'tanggal_input') {
                 $sql_alter = "ALTER TABLE `$tabel` ADD COLUMN $def";
                 try { $INDO_DB->exec($sql_alter); } catch (PDOException $e) {
@@ -261,6 +282,23 @@ indo_set_database();
             php_output.push_str(&format!("echo {};\n", content)); continue;
         }
 
+        // -> TAMBAHKAN PENANGANAN MODUL HEADER/FOOTER (SINTAKS KURUNG SIKU)
+        if trimmed.starts_with("[pakai ") && trimmed.ends_with("\"]") {
+            let path = trimmed
+                .strip_prefix("[pakai \"").unwrap()
+                .strip_suffix("\"]").unwrap();
+            
+            php_output.push_str(&format!("?>\n<?php include __DIR__ . '/../{}'; ?>\n<?php\n", path));
+            continue;
+        }
+
+        // -> TAMBAHKAN PENANGANAN MODUL (SINTAKS HURUF KAPITAL STANDAR)
+        if trimmed.starts_with("PAKAI ") {
+            let path = trimmed.strip_prefix("PAKAI ").unwrap().trim_matches('"');
+            php_output.push_str(&format!("include __DIR__ . '/../{}';\n", path));
+            continue;
+        }
+
         if trimmed.starts_with("SET DATABASE") {
             let param = trimmed.strip_prefix("SET DATABASE").unwrap().trim();
             if param.is_empty() || param.eq_ignore_ascii_case("DINAMIS") || param.eq_ignore_ascii_case("OTOMATIS") {
@@ -274,9 +312,10 @@ indo_set_database();
 
         // PENANGANAN BLOK MULTILINE SKEMA TABEL
         if in_skema {
-            // SOLUSI: Blok hanya dianggap selesai jika baris DIMULAI dengan tutup kurung!
             if trimmed.starts_with(')') {
-                php_output.push_str(&format!("indo_migrasi_tabel('{}', '{}');\n", skema_nama, skema_kolom));
+                // AMANKAN TANDA PETIK SATU AGAR TIDAK MERUSAK STRING PHP
+                let safe_kolom = skema_kolom.replace('\'', "\\'");
+                php_output.push_str(&format!("indo_migrasi_tabel('{}', '{}');\n", skema_nama, safe_kolom));
                 in_skema = false;
             } else {
                 skema_kolom.push_str(trimmed);
@@ -306,7 +345,8 @@ indo_set_database();
                 let tabel = sisa[..idx_buka].trim();
                 if sisa.ends_with(')') {
                     let kolom = sisa[idx_buka + 1..sisa.len() - 1].trim();
-                    php_output.push_str(&format!("indo_migrasi_tabel('{}', '{}');\n", tabel, kolom));
+                    let safe_kolom = kolom.replace('\'', "\\'");
+                    php_output.push_str(&format!("indo_migrasi_tabel('{}', '{}');\n", tabel, safe_kolom));
                 }
             }
             continue;

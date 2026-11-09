@@ -10,6 +10,7 @@ pub enum TipeToken {
     Tetapkan,
     Hapus,
     Tampilkan,
+    Pakai,
     Panggil,
     Dengan,
     Jika,

@@ -405,11 +405,11 @@ AKHIR PROGRAM
     fs::write(base_path.join("private_core/casing/beranda.indo"), beranda_casing)?;
     println!("✔ Berkas private_core/casing/beranda.indo dibuat");
 
-    // 7. Pintu Gerbang Utama (index.php) dengan JIT Auto-Compiler Bawaan
+// 7. Pintu Gerbang Utama (index.php) dengan JIT Auto-Compiler Bawaan
     let index_php_content = r#"<?php
 // ==========================================================
 // PINTU GERBANG UTAMA INDOCODE (SINGLE ENTRY POINT)
-// Dilengkapi JIT (Just-In-Time) Auto-Compiler
+// Dilengkapi JIT (Just-In-Time) Auto-Compiler & Template Engine
 // ==========================================================
 
 $env_path = __DIR__ . '/../.env';
@@ -453,16 +453,28 @@ $casing_indo = __DIR__ . '/../private_core/casing/' . $route . '.indo';
 
 if (file_exists($casing_indo)) {
     $casing_php = __DIR__ . '/../private_core/cache/' . md5($route . '_casing') . '.php';
+    
+    // JIT TEMPLATE ENGINE: Menerjemahkan sintaks [pakai ...] sebelum di-cache
     if (!file_exists($casing_php) || filemtime($casing_indo) > filemtime($casing_php)) {
-        copy($casing_indo, $casing_php);
+        $html_konten = file_get_contents($casing_indo);
+        
+        // Ubah tag [pakai "namafile.indo"] menjadi include path absolut yang benar
+        $html_konten = preg_replace(
+            '/\[pakai\s+"([^"]+)"\]/', 
+            '<?php include __DIR__ . "/../../private_core/casing/$1"; ?>', 
+            $html_konten
+        );
+        
+        file_put_contents($casing_php, $html_konten);
     }
+    
     require_once $casing_php;
 } else {
     http_response_code(404);
     echo "<h1>404 - Halaman '$route' tidak ditemukan.</h1>";
 }
-?>
-"#;
+?>"#;
+
     fs::write(base_path.join("public_html/index.php"), index_php_content)?;
     println!("✔ Pintu gerbang public_html/index.php dibuat");
 

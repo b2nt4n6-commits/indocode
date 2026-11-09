@@ -222,6 +222,7 @@ impl Lexer {
                         "HAPUS" => TipeToken::Hapus,
                         "TAMPILKAN" => TipeToken::Tampilkan,
                         "PANGGIL" => TipeToken::Panggil,
+                        "PAKAI" => TipeToken::Pakai,
                         "DENGAN" => TipeToken::Dengan,
                         "JIKA" => TipeToken::Jika,
                         "MAKA" => TipeToken::Maka,
