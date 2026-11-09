@@ -1,0 +1,33 @@
+Berikut adalah urutan langkah murni membuat proyek web dari nol hingga database siap digunakan, yang bisa Anda jadikan panduan resmi untuk pengguna INDOCODE:
+
+1.Membangun Kerangka Proyek:Jalankan perintah ini di CMD / Terminal.Buka terminal (CMD) di folder server lokal Anda (misalnya C:\laragon\www\), lalu ketikkan perintah scaffolding: PowerShellindocode init nama_proyek_anda
+
+INDOCODE akan otomatis membuatkan seluruh struktur folder, file index.php, dan meng-copy mesin indocode.exe ke dalam proyek.
+
+2.Cek & Sesuaikan Nama Database:
+Buka file .env di folder proyek. Masuk ke dalam folder proyek yang baru dibuat. Buka file .env. Secara default, INDOCODE sudah sangat pintar dengan mengisikan nama database otomatis: envDB_NAME=nama_proyek_anda_db
+Anda bisa membiarkannya saja, atau mengubah nama databasenya di sini. Tidak perlu membuat database di phpMyAdmin, INDOCODE akan membuatnya secara otomatis nanti!
+
+3.Memicu Pembuatan File Cetak Biru (Skema):Jalankan migrasi pertama via CMD.Di terminal, pastikan Anda sudah masuk ke dalam folder proyek (cd nama_proyek_anda). Lalu ketik: PowerShellindocode migrasi
+Mesin akan menyapa dan otomatis membuatkan file cetak biru di private_core/database/skema.indo.
+
+4.Merancang Tabel dan Kolom: Edit file private_core/database/skema.indo. Buka file skema.indo tersebut menggunakan teks editor. Tuliskan tabel dan kolom yang Anda butuhkan secara deklaratif. (Penting: Pastikan Anda menaruh tanda koma, di akhir setiap baris definisi kolom!)Contoh: indocode 
+
+MULAI PROGRAM
+
+SKEMA TABEL warga (
+    nik VARCHAR(20) UNIQUE,
+    nama_lengkap VARCHAR(150),
+    alamat TEXT,
+    jenis_kelamin VARCHAR(20)
+)
+
+SKEMA TABEL surat (
+    nomor_surat VARCHAR(50),
+    jenis_surat VARCHAR(100)
+)
+
+AKHIR PROGRAM
+
+5.Sinkronisasi ke Database (Auto-Sync): Jalankan migrasi kedua via CMD. Setelah selesai merancang atau menambah kolom di file skema.indo, simpan file tersebut dan kembali ke terminal. Ketik lagi: PowerShell indocode migrasi
+Keajaiban terjadi! INDOCODE akan otomatis: Menciptakan database baru sesuai isi .env (jika belum ada). Membuat tabel warga dan surat. Jika di masa depan Anda menambahkan kolom baru di file skema dan menjalankan perintah ini lagi, mesin hanya akan menambahkan kolom barunya saja tanpa menghapus data yang sudah ada!Dengan 5 langkah di atas, pengguna sudah memiliki kerangka proyek yang siap pakai, database yang terhubung secara global tanpa konfigurasi manual, dan tabel yang sudah mengakar kuat di MySQL.

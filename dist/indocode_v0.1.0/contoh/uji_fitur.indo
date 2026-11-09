@@ -1,0 +1,24 @@
+MULAI PROGRAM
+
+    # 1. Deklarasi dan Pencetakan Awal
+    BUAT saldo = 100000
+    TAMPILKAN "Saldo Awal: " + saldo
+
+    # 2. Pengubahan Nilai Variabel
+    UBAH saldo = saldo + 50000
+    TAMPILKAN "Saldo Setelah UBAH (+50rb): " + saldo
+
+    TETAPKAN saldo = saldo - 20000
+    TAMPILKAN "Saldo Setelah TETAPKAN (-20rb): " + saldo
+
+    # 3. Penghapusan Variabel dari Memori
+    BUAT variabel_sementara = "Data Rahasia"
+    TAMPILKAN "Variabel Ada: " + variabel_sementara
+
+    HAPUS variabel_sementara
+    TAMPILKAN "Variabel berhasil dihapus dari memori."
+
+    # 4. Pemanggilan Perintah Sistem Langsung (Tanpa cmd.exe /c)
+    PANGGIL "echo" DENGAN "Menjalankan Perintah Windows dari INDOCODE"
+
+AKHIR PROGRAM

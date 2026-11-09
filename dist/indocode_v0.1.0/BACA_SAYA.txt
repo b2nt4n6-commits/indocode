@@ -1,0 +1,11 @@
+﻿===================================================
+INDOCODE Bahasa Pemrograman Indonesia (v0.1.0)
+===================================================
+
+CARA PENGGUNAAN:
+1. Jalankan 'pasang_path.bat' (Klik kanan -> Run as Administrator) untuk mendaftarkan perintah 'indo'.
+2. Buka Command Prompt (CMD) atau PowerShell baru.
+3. Jalankan program contoh:
+   indo contoh\uji_fitur.indo
+
+Dibuat dengan Rust Engine Native.

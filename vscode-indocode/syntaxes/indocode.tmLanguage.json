@@ -1,0 +1,90 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "INDOCODE",
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#keywords" },
+    { "include": "#constants" },
+    { "include": "#strings" },
+    { "include": "#numbers" },
+    { "include": "#operators" }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.number-sign.indo",
+          "match": "#.*$"
+        },
+        {
+          "name": "comment.line.double-slash.indo",
+          "match": "//.*$"
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.indo",
+          "match": "\\b(MULAI|PROGRAM|AKHIR|JIKA|MAKA|JIKA_TIDAK|ULANGI|KALI|FUNGSI|KEMBALIKAN)\\b"
+        },
+        {
+          "name": "storage.type.indo",
+          "match": "\\b(BUAT|UBAH|TETAPKAN|HAPUS)\\b"
+        },
+        {
+          "name": "support.function.indo",
+          "match": "\\b(TAMPILKAN|PANGGIL|DENGAN)\\b"
+        }
+      ]
+    },
+    "constants": {
+      "patterns": [
+        {
+          "name": "constant.language.boolean.indo",
+          "match": "\\b(BENAR|SALAH)\\b"
+        },
+        {
+          "name": "constant.language.null.indo",
+          "match": "\\b(KOSONG)\\b"
+        }
+      ]
+    },
+    "strings": {
+      "name": "string.quoted.double.indo",
+      "begin": "\"",
+      "end": "\"",
+      "patterns": [
+        {
+          "name": "constant.character.escape.indo",
+          "match": "\\\\."
+        }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        {
+          "name": "constant.numeric.indo",
+          "match": "\\b[0-9]+(\\.[0-9]+)?\\b"
+        }
+      ]
+    },
+    "operators": {
+      "patterns": [
+        {
+          "name": "keyword.operator.comparison.indo",
+          "match": "==|!=|>=|<=|>|<"
+        },
+        {
+          "name": "keyword.operator.assignment.indo",
+          "match": "="
+        },
+        {
+          "name": "keyword.operator.arithmetic.indo",
+          "match": "\\+|-|\\*|/"
+        }
+      ]
+    }
+  },
+  "scopeName": "source.indo"
+}

@@ -1,0 +1,29 @@
+﻿{
+  "files.associations": {
+    "*.indo": "indocode"
+  },
+  "editor.tokenColorCustomizations": {
+    "textMateRules": [
+      {
+        "scope": "keyword.control.indo",
+        "settings": { "foreground": "#569CD6", "fontStyle": "bold" }
+      },
+      {
+        "scope": "storage.type.indo",
+        "settings": { "foreground": "#C586C0", "fontStyle": "bold" }
+      },
+      {
+        "scope": "support.function.indo",
+        "settings": { "foreground": "#DCDCAA" }
+      },
+      {
+        "scope": "string.quoted.double.indo",
+        "settings": { "foreground": "#CE9178" }
+      },
+      {
+        "scope": "comment.line.number-sign.indo",
+        "settings": { "foreground": "#6A9955" }
+      }
+    ]
+  }
+}

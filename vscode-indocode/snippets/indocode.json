@@ -1,0 +1,53 @@
+{
+  "Program Utama": {
+    "prefix": "mulai",
+    "body": [
+      "MULAI PROGRAM",
+      "    $0",
+      "AKHIR PROGRAM"
+    ],
+    "description": "Blok utama program INDOCODE"
+  },
+  "Deklarasi Variabel": {
+    "prefix": "buat",
+    "body": [
+      "BUAT ${1:nama_variabel} = ${2:nilai}"
+    ],
+    "description": "Deklarasi variabel baru"
+  },
+  "Cetak Teks": {
+    "prefix": "tampilkan",
+    "body": [
+      "TAMPILKAN ${1:\"teks\"}"
+    ],
+    "description": "Menampilkan keluaran ke terminal"
+  },
+  "Percabangan Jika": {
+    "prefix": "jika",
+    "body": [
+      "JIKA ${1:kondisi} MAKA",
+      "    $0",
+      "AKHIR JIKA"
+    ],
+    "description": "Blok percabangan JIKA"
+  },
+  "Perulangan Ulangi": {
+    "prefix": "ulangi",
+    "body": [
+      "ULANGI ${1:5} KALI",
+      "    $0",
+      "AKHIR ULANGI"
+    ],
+    "description": "Blok perulangan ULANGI"
+  },
+  "Deklarasi Fungsi": {
+    "prefix": "fungsi",
+    "body": [
+      "FUNGSI ${1:nama_fungsi}(${2:param})",
+      "    $0",
+      "    KEMBALIKAN ${3:nilai}",
+      "AKHIR FUNGSI"
+    ],
+    "description": "Deklarasi fungsi baru"
+  }
+}

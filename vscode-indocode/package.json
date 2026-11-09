@@ -1,0 +1,41 @@
+{
+  "name": "indocode-syntax",
+  "displayName": "INDOCODE Language Support",
+  "description": "Dukungan pewarnaan sintaks resmi untuk Bahasa Pemrograman INDOCODE (.indo)",
+  "version": "0.1.0",
+  "publisher": "indocode",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/indocode/indocode.git"
+  },
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Snippets"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "indocode",
+        "aliases": ["INDOCODE", "indocode"],
+        "extensions": [".indo"],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "indocode",
+        "scopeName": "source.indo",
+        "path": "./syntaxes/indocode.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "indocode",
+        "path": "./snippets/indocode.json"
+      }
+    ]
+  }
+}
